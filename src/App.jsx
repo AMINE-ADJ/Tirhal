@@ -5,8 +5,8 @@ import './App.css'
 
 function App() {
   return (
-    <div className='font-bold bg-white text-lg h-screen w-full '>
-dddnd n l,d,nedjndj
+    <div className='font-bold bg-gray-500 text-lg h-screen w-full '>
+
     </div>
       
   )
