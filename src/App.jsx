@@ -1,7 +1,6 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import Helloworld from './components/test'
-import Landing from './components/Login/Landing';
+import Landing from './Components/Login/Landing';
 
 function App() {
   return (
