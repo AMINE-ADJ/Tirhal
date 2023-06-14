@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import logo from '../../assets/logo.png'
 import searchIcon from '../../assets/search.jpg'
-export default function SearchBar() {
+export default function SearchBar(props) {
+
+  
   const [message, setMessage] = useState('');
   const handleChange = event => {
     setMessage(event.target.value);
@@ -10,7 +12,9 @@ export default function SearchBar() {
   };
   const handleSubmit =() => {
     console.log('submitted value is:', message);
+      props.sendText(message)
   };
+  
   return (
     <div className='flex flex-row items-center gap-4 '>
         <img

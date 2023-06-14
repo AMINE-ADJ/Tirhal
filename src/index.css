@@ -2,7 +2,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '~leaflet/dist/leaflet.css';
+.leaflet-container {
+      height:640px;
+      width: 1500px;
+      z-index: 20;
 
+}
 
 #landing{
     -webkit-animation: mover 1s infinite  alternate;

@@ -1,6 +1,6 @@
 import LieuCard from "./LieuCard";
 import RegionCard from "./RegionCard";
-
+import AddrespoLieu from "../Respo/AddRespoLieu";
 export default function SideBar(props) {
   
 
@@ -18,7 +18,7 @@ export default function SideBar(props) {
           case 'Region':
             return <RegionCard/>
           case 'Lieu':
-            return <LieuCard/>
+            return <AddrespoLieu/>
           default:
             return null
         }
