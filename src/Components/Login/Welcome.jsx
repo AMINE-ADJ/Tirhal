@@ -2,6 +2,7 @@ import React from "react";
 import email from "../../assets/email.svg"
 import password from "../../assets/password.svg"
 import google from "../../assets/google.svg"
+import { Link } from "react-router-dom";
 export default function Welcome() {
     let inputs=[{description:"Adresse mail",icon:email,type:""},{description:"Mot de passe",icon:password,type:"password"}];
     return(
@@ -22,7 +23,10 @@ export default function Welcome() {
             <input type="checkbox" className="cursor-pointer"></input>
             <p className="text-sm text-[#6358DC]"><a>Forgot password?</a></p>
             </div>
-                <button className="md:w-[400px] md:h-[45px] text-white font-medium bg-[#6358DC] rounded-[5px] hover:bg-white hover:text-[#6358DC] hover:border-2 hover:border-[#6358DC]">Connexion</button>
+            <Link to='/auth'>
+            <button className="md:w-[400px] md:h-[45px] text-white font-medium bg-[#6358DC] rounded-[5px] hover:bg-white hover:text-[#6358DC] hover:border-2 hover:border-[#6358DC]">Connexion</button>
+
+            </Link>
                   <div className="flex flex-row items-baseline justify-center gap-x-[10px]">
                     <div className="md:w-[150px] md:h-[3px] bg-[#F4F4F4]"></div>
                     <p className="md:text-lg">Ou</p>

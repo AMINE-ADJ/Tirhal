@@ -1,13 +1,16 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import Helloworld from './components/test'
-import Landing from './components/Login/Landing';
+import HomePage from './Components/HomePage/homePage';
+import Landing from './Components/Login/Landing';
+
+
 
 function App() {
   return (
-    <div className='font-bold bg-gray-500 text-lg h-screen w-full '>
+    <div className=' '>
 <Routes>
   <Route path='/' element={<Landing/>}/>
+  <Route path='/auth' element={<HomePage/>}/>
 </Routes>
     </div>  
   );
