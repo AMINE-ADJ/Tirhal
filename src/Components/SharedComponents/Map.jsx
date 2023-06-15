@@ -85,7 +85,7 @@ export default function Map(props) {
   }, [props.pos, map]);
 
   // const [choosed, setChoosed] = useState(true);
-
+    const [color,setColor]=useState("#FFA500");
   return (
     <div className="relative">
       <MapContainer
@@ -110,7 +110,7 @@ export default function Map(props) {
             <Polygon
               pathOptions={{
                 fillColor: ischoosed[key.properties.city_code - 1]
-                  ? "#FFA500"
+                  ? color
                   : "#FFFFF",
                 //fillOpacity: 0.8,
                 weight: 1,
@@ -149,19 +149,10 @@ export default function Map(props) {
                   const map = mapRef.current;
                   console.log([lat, lng]);
                   console.log(key.properties.city_code);
-                  map.setView([lat, lng], 7);
+                  map.setView([lat, lng], 8);
                   if (ischoosed[key.properties.city_code - 1]) {
                     HandleRegionClick("Region");
-                    const layer = event.target;
-
-                    layer.setStyle({
-                      fillColor: "#FFA500",
-                      fillColor: "#FFA500",
-                      fillOpacity: 0.7,
-                      weight: 2,
-                      opacity: 1,
-                      color: "white",
-                    });
+                   setColor("");
                   } else {
                     HandleRegionClick("AddRespRegion");
                   }
