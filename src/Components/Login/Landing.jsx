@@ -1,8 +1,6 @@
 import React from "react";
 import landing from "../../assets/landing.svg"
 import Welcome from "./Welcome";
-import AddrespoLieu from "../Respo/AddRespoLieu";
-
 export default function Landing() {
   
     return(

@@ -7,9 +7,6 @@ const [noml,setNoml]=useState("");
 const [cat,setCat]=useState("");
 const [ad,setAd]=useState("");
 const [hor,setHor]=useState("");
-
-
-
 const prochaineEtape=()=>{
   if  (noml!="" && cat!="" && hor!="" && ad!="") {
         setEtape(cur=>cur+1);
