@@ -16,6 +16,9 @@ import { wilayas } from "./wilayas.js";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
   //const [map,setMap]=useState(null);
+  const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
+  const [isZoomed, setisZoomed] = useState(false);
+
   const mapRef = useRef(null);
   function LocationMarker() {
     const map = useMapEvents({
@@ -41,12 +44,13 @@ export default function Map(props) {
     iconUrl: "../../assets/epingle.png",
     iconSize: [38, 38], // size of the icon
   });
-  const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
+
   const updateRegionCase = (index, value) => {
     const updatedTab = [...ischoosed];
     updatedTab[index] = value;
     setichoosed(updatedTab);
   };
+
   useEffect(() => {
     //check if each region rahi majoutiya wella nn, ...
     //recuper code wilaya existant. //get all region.
@@ -152,6 +156,7 @@ export default function Map(props) {
                   map.setView([lat, lng], 7);
                   if (ischoosed[key.properties.city_code - 1]) {
                     HandleRegionClick("Region");
+                    setisZoomed(true);
                     const layer = event.target;
 
                     layer.setStyle({
@@ -163,6 +168,7 @@ export default function Map(props) {
                       color: "white",
                     });
                   } else {
+                    setisZoomed(false);
                     HandleRegionClick("AddRespRegion");
                   }
                   // HandleRegionClick();
@@ -172,12 +178,16 @@ export default function Map(props) {
           );
         })}
       </MapContainer>
-      <button
-        onClick={HandleBtnClick}
-        className="absolute bottom-5 flex flex-row justify-center items-center shadow-black shadow-2xl right-2 z-50 py-2 px-5 bg-white rounded-lg font-poppins"
-      >
-        <img src={PinPic} />+ Ajouter un nouveau Lieu Touristique{" "}
-      </button>
+      {isZoomed && (
+        <>
+          <button
+            onClick={HandleBtnClick}
+            className="absolute bottom-5 flex flex-row justify-center items-center shadow-black shadow-2xl right-2 z-50 py-2 px-5 bg-white rounded-lg font-poppins"
+          >
+            <img src={PinPic} />+ Ajouter un nouveau Lieu Touristique{" "}
+          </button>
+        </>
+      )}
     </div>
   );
 }
