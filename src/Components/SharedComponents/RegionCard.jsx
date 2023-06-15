@@ -58,7 +58,7 @@ export default function RegionCard() {
 
         </div>
        
-       <button className='bg-terhal-blue2 mx-24 rounded-xl font-poppins font-semibold hover:bg-blue-300 text-white py-3'>Modifer</button>
+       <button  className='bg-terhal-blue2 mx-24 rounded-xl font-poppins font-semibold hover:bg-blue-300 text-white py-3'>Modifer</button>
     </div>
   )
 }

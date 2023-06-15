@@ -28,7 +28,7 @@ export default function Map(props){
         
       }
       const HandleBtnClick = ()=> { 
-        props.handleClickMap("AddResp");
+        props.handleClickMap("AddRespLieu");
       }
       const icon= new Icon({
         iconUrl : "../../assets/epingle.png",
@@ -74,7 +74,7 @@ export default function Map(props){
     return(
         
 <div className="relative">
-<MapContainer ref={mapRef} id="map"  center={ [30.70718851,3.048062480049727]} zoom={9} whenCreated={(map) =>mapRef.current = map}  >
+<MapContainer ref={mapRef} id="map"  center={ [30.70718851,3.048062480049727]} zoom={5} whenCreated={(map) =>mapRef.current = map}  >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
