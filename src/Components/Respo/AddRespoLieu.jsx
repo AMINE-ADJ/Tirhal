@@ -25,7 +25,7 @@ console.log(data);
         <div>
 
         <form onSubmit={handleSubmit(formSubmitHandler)}>
-       { etape==1 ? ( <div className="md:w-[350px] md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center" >   
+       { etape==1 ? ( <div className="md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center rounded-2xl shadow-2xl" >   
             <div className=" flex flex-col items-center gap-y-[20px] ">
             <p className="text-xl font-medium font-poppins font-bold">Ajouter un lieu</p>
             <input className=" outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]" placeholder="Nom lieu" name="nomlieu"{...register("nomlieu")} onChange={(e)=>setNoml(e.target.value)}></input>
@@ -58,7 +58,7 @@ console.log(data);
           
 
         </div>)  : null }
-        { etape==2 ? ( <div className="md:w-[350px] md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center" >   
+        { etape==2 ? ( <div className="rounded-2xl shadow-2xl md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center" >   
             <div className=" flex flex-col items-center gap-y-[30px] ">
             <p className="text-xl font-medium font-poppins font-bold">Ajouter un responsable </p>
             <input className=" outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]" placeholder="Nom responsable" name="nomresponsable" {...register("nomresponsable")} required></input>

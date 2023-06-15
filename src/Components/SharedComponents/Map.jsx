@@ -1,5 +1,6 @@
 import React, { useState,useEffect,useRef } from "react";
 import { MapContainer, TileLayer, useMapEvents,Marker,Popup, useMap } from 'react-leaflet';
+import PinPic from "../../assets/Pin.png"
 import "leaflet/dist/leaflet.css";
 import L, { Icon, map } from "leaflet"
 import GeocoderLeaflet from "./Geocoder"
@@ -25,6 +26,9 @@ export default function Map(props){
           </Marker>
         )
         
+      }
+      const HandleBtnClick = ()=> { 
+        props.handleClickMap("AddResp");
       }
       const icon= new Icon({
         iconUrl : "../../assets/epingle.png",
@@ -69,15 +73,18 @@ export default function Map(props){
        },[props.pos,map])
     return(
         
-
-<MapContainer ref={mapRef} id="map"  center={ [30.70718851,3.048062480049727]} zoom={5} whenCreated={(map) =>mapRef.current = map}  >
+<div className="relative">
+<MapContainer ref={mapRef} id="map"  center={ [30.70718851,3.048062480049727]} zoom={9} whenCreated={(map) =>mapRef.current = map}  >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <LocationMarker/>
-
+      
       </MapContainer>
+        <button onClick={HandleBtnClick} className="absolute bottom-5 flex flex-row justify-center items-center shadow-black shadow-2xl right-2 z-50 py-2 px-5 bg-white rounded-lg font-poppins"><img src={PinPic}/>+ Ajouter un nouveau Lieu Touristique </button>
     
+</div>
+
     );
 }

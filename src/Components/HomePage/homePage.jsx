@@ -13,7 +13,7 @@ export default function HomePage() {
    const [place,setPlace]=useState("");
    const handleTextChangend = (text) => {
     setPlace(text);
-
+    // handleClickMap("Region");
   };
   return (
     <div className='h-screen w-screen bg-white '>
@@ -25,6 +25,7 @@ export default function HomePage() {
         <button onClick={()=>handleClickMap("Lieu")} className='bg-slate-400 rounded p-10'>Lieu</button>
         <button onClick={()=>handleClickMap("AddResp")} className='bg-slate-400 rounded p-10'> Add resp Lieu</button> */}
         <Map handleClickMap={handleClickMap} pos={place}/>
+
         </div>
       </div>
       
