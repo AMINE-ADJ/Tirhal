@@ -55,7 +55,7 @@ export default function Map(props){
                 fetchData();
              
            }
-           
+         console.log(geocode(props.pos));  
         if(props.pos!="" && mapRef.current){
          const map=mapRef.current;
          console.log(geocode("alger"));
@@ -69,7 +69,7 @@ export default function Map(props){
     return(
         
 
-<MapContainer ref={mapRef} id="map"  center={  [36.7762, 3.05997] } zoom={13} whenCreated={(map) =>mapRef.current = map}  >
+<MapContainer ref={mapRef} id="map"  center={  [36.737232, 3.086472] } zoom={13} whenCreated={(map) =>mapRef.current = map}  >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
