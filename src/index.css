@@ -4,10 +4,10 @@
 @tailwind utilities;
 @import 'leaflet/dist/leaflet.css';
 .leaflet-container {
-      height:640px;
-      width: 1500px;
-      z-index: 20;
-
+      height:610px;
+      width: 1100px;
+      margin: 8px,12px;
+      border-radius: 20px;
 }
 
 #landing{
