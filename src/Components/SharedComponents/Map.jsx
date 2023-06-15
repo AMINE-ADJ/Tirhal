@@ -153,7 +153,7 @@ export default function Map(props){
         
         
 
-       
+        <LocationMarker/>
       
       </MapContainer>
         <button onClick={HandleBtnClick} className="absolute bottom-5 flex flex-row justify-center items-center shadow-black shadow-2xl right-2 z-50 py-2 px-5 bg-white rounded-lg font-poppins"><img src={PinPic}/>+ Ajouter un nouveau Lieu Touristique </button>
