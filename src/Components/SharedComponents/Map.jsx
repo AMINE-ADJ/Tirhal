@@ -49,7 +49,9 @@ export default function Map(props) {
   };
   useEffect(() => {
     //check if each region rahi majoutiya wella nn, ...
+    //recuper code wilaya existant. //get all region.
     updateRegionCase(0, true); //updating adrar
+    // updateRegionCase(code_wilaya - 1 , true); //updating adrar
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -98,7 +100,8 @@ export default function Map(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {wilayas.features.map((key, index) => {
-          console.log(index);
+          console.log(index, key.properties.city_code);
+
           const coordinates = key.geometry.coordinates[0].map((item) => [
             item[1],
             item[0],
@@ -106,7 +109,9 @@ export default function Map(props) {
           return (
             <Polygon
               pathOptions={{
-                fillColor: ischoosed[index] ? "#FFA500" : "#FFFFF",
+                fillColor: ischoosed[key.properties.city_code - 1]
+                  ? "#FFA500"
+                  : "#FFFFF",
                 //fillOpacity: 0.8,
                 weight: 1,
                 opacity: 1,
@@ -143,14 +148,15 @@ export default function Map(props) {
                   const { lat, lng } = target.getCenter();
                   const map = mapRef.current;
                   console.log([lat, lng]);
+                  console.log(key.properties.city_code);
                   map.setView([lat, lng], 7);
-                  if (ischoosed[index]) {
+                  if (ischoosed[key.properties.city_code - 1]) {
                     HandleRegionClick("Region");
                     const layer = event.target;
 
                     layer.setStyle({
-                      fillColor: "#8BA6FF",
-                      fillColor: "#8BA6FF",
+                      fillColor: "#FFA500",
+                      fillColor: "#FFA500",
                       fillOpacity: 0.7,
                       weight: 2,
                       opacity: 1,
