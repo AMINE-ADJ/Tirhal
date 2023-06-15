@@ -6,16 +6,15 @@ import {
   Marker,
   Popup,
   useMap,
+  Polygon,
 } from "react-leaflet";
 import PinPic from "../../assets/Pin.png";
 import "leaflet/dist/leaflet.css";
 import L, { Icon, map } from "leaflet";
 import GeocoderLeaflet from "./Geocoder";
-
+import { wilayas } from "./wilayas.js";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
-  const [newposition, setnewPosition] = useState(null);
-  const [newpos, setNewPos] = useState("");
   //const [map,setMap]=useState(null);
   const mapRef = useRef(null);
   function LocationMarker() {
@@ -32,6 +31,9 @@ export default function Map(props) {
       </Marker>
     );
   }
+  const HandleRegionClick = (e) => {
+    props.handleClickMap(e);
+  };
   const HandleBtnClick = () => {
     props.handleClickMap("AddRespLieu");
   };
@@ -39,8 +41,15 @@ export default function Map(props) {
     iconUrl: "../../assets/epingle.png",
     iconSize: [38, 38], // size of the icon
   });
-
+  const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
+  const updateRegionCase = (index, value) => {
+    const updatedTab = [...ischoosed];
+    updatedTab[index] = value;
+    setichoosed(updatedTab);
+  };
   useEffect(() => {
+    //check if each region rahi majoutiya wella nn, ...
+    updateRegionCase(0, true); //updating adrar
     const fetchData = async () => {
       try {
         const response = await fetch(
@@ -66,12 +75,15 @@ export default function Map(props) {
         console.log(result);
         const map = mapRef.current;
 
-        map.setView(result, map.getZoom());
+        map.setView(result, 7);
       }
     });
     console.log("props.pos=", props.pos);
     console.log("map is rendred");
   }, [props.pos, map]);
+
+  // const [choosed, setChoosed] = useState(true);
+
   return (
     <div className="relative">
       <MapContainer
@@ -85,7 +97,74 @@ export default function Map(props) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <LocationMarker />
+        {wilayas.features.map((key, index) => {
+          console.log(index);
+          const coordinates = key.geometry.coordinates[0].map((item) => [
+            item[1],
+            item[0],
+          ]);
+          return (
+            <Polygon
+              pathOptions={{
+                fillColor: ischoosed[index] ? "#FFA500" : "#FFFFF",
+                //fillOpacity: 0.8,
+                weight: 1,
+                opacity: 1,
+                dashArray: 4,
+                color: "grey",
+              }}
+              positions={coordinates}
+              eventHandlers={{
+                /*mouseover: (e) => {
+                  const layer = e.target;
+                  layer.setStyle({
+                    dashArray: "",
+                    fillColor: "#8BA6FF",
+                    fillOpacity: 0.7,
+                    weight: 2,
+                    opacity: 1,
+                    color: "white",
+                  });
+                  const { lat, lng } = e.latlng;
+            e.target.bindPopup(`Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`).openPopup();
+                } ,
+                mouseout: (e) => {
+                    const layer = e.target;
+                    layer.setStyle({
+                      fillOpacity: 0.7,
+                      weight: 2,
+                      dashArray: "3",
+                      color: 'white',
+                      fillColor: '#AFAFAF'
+                    });
+                  },*/
+                click: (event) => {
+                  const { target } = event;
+                  const { lat, lng } = target.getCenter();
+                  const map = mapRef.current;
+                  console.log([lat, lng]);
+                  map.setView([lat, lng], 7);
+                  if (ischoosed[index]) {
+                    HandleRegionClick("Region");
+                    const layer = event.target;
+
+                    layer.setStyle({
+                      fillColor: "#8BA6FF",
+                      fillColor: "#8BA6FF",
+                      fillOpacity: 0.7,
+                      weight: 2,
+                      opacity: 1,
+                      color: "white",
+                    });
+                  } else {
+                    HandleRegionClick("AddRespRegion");
+                  }
+                  // HandleRegionClick();
+                },
+              }}
+            />
+          );
+        })}
       </MapContainer>
       <button
         onClick={HandleBtnClick}
