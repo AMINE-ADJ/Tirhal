@@ -13,13 +13,14 @@ import "leaflet/dist/leaflet.css";
 import L, { Icon, map } from "leaflet";
 import GeocoderLeaflet from "./Geocoder";
 import { wilayas } from "./wilayas.js";
+import axios from "axios";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
 
   //const [map,setMap]=useState(null);
-  const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
+  const [ischoosed, setichoosed] = useState(new Array(60).fill(false));
   const [isZoomed, setisZoomed] = useState(false);
-  const [showMarker,setShowMarker]=useState(false);
+  const [showMarker, setShowMarker] = useState(false);
   const mapRef = useRef(null);
   const markers = [
     { position: [26.426308999847024, -1.5776367858052256], title: 'Marker 1' },
@@ -30,10 +31,10 @@ export default function Map(props) {
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
-       // props.handleClickMap("Region");
+        // props.handleClickMap("Region");
         setPosition(e.latlng);
-        console.log("marker",e.latlng);
-        localStorage.setItem("coords",JSON.stringify(e.latlng));
+        console.log("marker", e.latlng);
+        localStorage.setItem("coords", JSON.stringify(e.latlng));
 
         map.flyTo(e.latlng, map.getZoom());
       },
@@ -45,11 +46,10 @@ export default function Map(props) {
       </Marker>
     );
   }
- 
-  const HandleRegionClick = (e) => {
-    props.handleClickMap(e);
+  const HandleRegionClick = (e, c) => {
+    props.handleClickMap(e, c);
   };
-  const [isClicked,setIsClicked]=useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const HandleBtnClick = () => {
     setIsClicked(true);
     props.setFinished(false);
@@ -60,16 +60,31 @@ export default function Map(props) {
     iconSize: [38, 38], // size of the icon
   });
 
-  const updateRegionCase = (index, value) => {
-    const updatedTab = [...ischoosed];
-    updatedTab[index] = value;
-    setichoosed(updatedTab);
-  };
-
   useEffect(() => {
     //check if each region rahi majoutiya wella nn, ...
     //recuper code wilaya existant. //get all region.
-    updateRegionCase(0, true); //updating adrar
+    axios
+      .get("http://127.0.0.1:8700/api/regions/", {
+        "Content-Type": "application/json",
+      })
+      .then(function (res) {
+        // console.log(res.data.data.role);
+        // console.log(res.data.data);
+        const Existedregions = res.data.data;
+        const updatedTab = [...ischoosed];
+        for (let index = 0; index < Existedregions.length; index++) {
+          const region = Existedregions[index];
+          console.log(region.code - 1, "it's state", true);
+          updatedTab[region.code - 1] = true;
+          // updateRegionCase(region.code - 1, true);
+        }
+        setichoosed(updatedTab);
+        console.log(ischoosed);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // updateRegionCase(0, true); //updating adrar
     // updateRegionCase(code_wilaya - 1 , true); //updating adrar
     const fetchData = async () => {
       try {
@@ -103,13 +118,8 @@ export default function Map(props) {
   }, [props.pos, map]);
 
   // const [choosed, setChoosed] = useState(true);
-    const [color,setColor]=useState("#FFA500");
-    const [selectedPos,setSelectedPos]=useState(null);
-
-
-
-
-
+  const [color, setColor] = useState("#FFA500");
+  const [selectedPos, setSelectedPos] = useState(null);
   return (
     <div className="relative">
       <MapContainer
@@ -129,7 +139,6 @@ export default function Map(props) {
         </Marker>
       )) : null }
         {wilayas.features.map((key, index) => {
-
           const coordinates = key.geometry.coordinates[0].map((item) => [
             item[1],
             item[0],
@@ -175,26 +184,25 @@ export default function Map(props) {
                   const { target } = event;
                   const { lat, lng } = target.getCenter();
                   const map = mapRef.current;
-                
-                
-                 
+
                   map.setView([lat, lng], 8);
                   if (ischoosed[key.properties.city_code - 1]) {
-                    if(!isClicked){HandleRegionClick("Region")}
-                   setColor("");
-                   setSelectedPos([lat, lng]);
+                    if (!isClicked) {
+                      console.log(key.properties.city_code);
+                      HandleRegionClick("Region", key.properties.city_code);
+                    }
+                    setColor("");
+                    setSelectedPos([lat, lng]);
                     setisZoomed(true);
                     setShowMarker(true);
-               
                   } else {
                     setisZoomed(false);
-                    setShowMarker(false);
-                    HandleRegionClick("AddRespRegion");
                     if (props.isMaster) {
                       HandleRegionClick("AddRespRegion");
                     } else {
                       HandleRegionClick("PrivateRegion");
                     }
+                    setShowMarker(false);
                   }
                   // HandleRegionClick();
                 },

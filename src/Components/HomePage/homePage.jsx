@@ -8,6 +8,7 @@ export default function HomePage() {
   const [User, setUser] = useState();
 
   const [WhatToToggle, setisWhatToToggle] = useState("");
+  const [WilayaCode, setWilayaCode] = useState(0);
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"));
     setUser(user);
@@ -24,10 +25,11 @@ export default function HomePage() {
     setFinished(e);
   }
   const showSidebar = () => setSideBar(!isOpen);
-  const handleClickMap = (what) => {
+  const handleClickMap = (what,code) => {
     showSidebar();
+    setWilayaCode(code);
     setisWhatToToggle(what);
-  };                          
+  };
   const [place, setPlace] = useState("");
   const handleTextChangend = (text) => {
     setPlace(text);
@@ -38,11 +40,8 @@ export default function HomePage() {
     <div className="h-screen w-screen bg-white ">
       <Navbar user={User} sendCords={handleTextChangend} />
       <div className="flex flex-row">
-        <SideBar isOpen={isOpen} setSideBar={setSideBar} WhatToToggle={WhatToToggle} handleFinished={handleFinished} />
-        <div
-          
-          className=" flex flex-row gap-20 items-center justify-center w-screen rounded-3xl mx-3 my-2"
-        >
+        <SideBar isOpen={isOpen} setSideBar={setSideBar} WhatToToggle={WhatToToggle} code={WilayaCode} />
+        <div className=" flex flex-row gap-20 items-center justify-center w-screen rounded-3xl mx-3 my-2">
           {/* <button onClick={()=>handleClickMap("Region")} className='bg-slate-400 rounded p-10'>Region</button>
         <button onClick={()=>handleClickMap("Lieu")} className='bg-slate-400 rounded p-10'>Lieu</button>
         <button onClick={()=>handleClickMap("AddResp")} className='bg-slate-400 rounded p-10'> Add resp Lieu</button> */}
