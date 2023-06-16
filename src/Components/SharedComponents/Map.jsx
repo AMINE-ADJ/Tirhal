@@ -19,13 +19,16 @@ export default function Map(props) {
   //const [map,setMap]=useState(null);
   const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
   const [isZoomed, setisZoomed] = useState(false);
-
+  const [showMarker, setShowMarker] = useState(false);
   const mapRef = useRef(null);
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
-        props.handleClickMap("Region");
+        // props.handleClickMap("Region");
         setPosition(e.latlng);
+        console.log("marker", e.latlng);
+        localStorage.setItem("coords", JSON.stringify(e.latlng));
+
         map.flyTo(e.latlng, map.getZoom());
       },
     });
@@ -38,7 +41,9 @@ export default function Map(props) {
   const HandleRegionClick = (e) => {
     props.handleClickMap(e);
   };
+  const [isClicked, setIsClicked] = useState(false);
   const HandleBtnClick = () => {
+    setIsClicked(true);
     props.handleClickMap("AddRespLieu");
   };
   const icon = new Icon({
@@ -81,7 +86,6 @@ export default function Map(props) {
       if (props.pos != "" && mapRef.current && result) {
         console.log(result);
         const map = mapRef.current;
-
         map.setView(result, 7);
       }
     });
@@ -90,7 +94,8 @@ export default function Map(props) {
   }, [props.pos, map]);
 
   // const [choosed, setChoosed] = useState(true);
-    const [color,setColor]=useState("#FFA500");
+  const [color, setColor] = useState("#FFA500");
+  const [selectedPos, setSelectedPos] = useState(null);
   return (
     <div className="relative">
       <MapContainer
@@ -105,8 +110,6 @@ export default function Map(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {wilayas.features.map((key, index) => {
-          console.log(index, key.properties.city_code);
-
           const coordinates = key.geometry.coordinates[0].map((item) => [
             item[1],
             item[0],
@@ -152,17 +155,16 @@ export default function Map(props) {
                   const { target } = event;
                   const { lat, lng } = target.getCenter();
                   const map = mapRef.current;
-                  console.log([lat, lng]);
-                  console.log(key.properties.city_code);
+
                   map.setView([lat, lng], 8);
                   if (ischoosed[key.properties.city_code - 1]) {
-                    HandleRegionClick("Region");
-
-                   setColor("");
-
+                    if (!isClicked) {
+                      HandleRegionClick("Region");
+                    }
+                    setColor("");
+                    setSelectedPos([lat, lng]);
                     setisZoomed(true);
-                    
-
+                    setShowMarker(true);
                   } else {
                     setisZoomed(false);
                     if (props.isMaster) {
@@ -170,6 +172,7 @@ export default function Map(props) {
                     } else {
                       HandleRegionClick("PrivateRegion");
                     }
+                    setShowMarker(false);
                   }
                   // HandleRegionClick();
                 },
@@ -177,6 +180,7 @@ export default function Map(props) {
             />
           );
         })}
+        {showMarker && isClicked ? <LocationMarker></LocationMarker> : null}
       </MapContainer>
       {isZoomed && (
         <>

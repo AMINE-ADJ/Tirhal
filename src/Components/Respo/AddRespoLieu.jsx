@@ -1,14 +1,15 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import camera from "../../assets/Camera.svg";
 import { useForm } from "react-hook-form"; 
 export default function AddrespoLieu(){
 const [etape,setEtape]=useState(1);
 const [noml,setNoml]=useState("");
 const [cat,setCat]=useState("");
+const [type,setType]=useState("");
 const [ad,setAd]=useState("");
 const [hor,setHor]=useState("");
 const prochaineEtape=()=>{
-  if  (noml!="" && cat!="" && hor!="" && ad!="") {
+  if  (noml!="" && cat!="" && type !="" && hor!="" && ad!="") {
         setEtape(cur=>cur+1);
         
     }else alert("Please fill all the fields");
@@ -17,9 +18,22 @@ const prochaineEtape=()=>{
 const {register,handleSubmit}=useForm(
   
   );
+  const [submittedData,setSubmittedData]=useState(null);
+  const [location,setLocation]=useState([]);
+  useEffect(()=>{
+    setLocation(JSON.parse(localStorage.getItem("coords")));//maranich nst3mlha
+
+  },[]);
+ 
+
 const formSubmitHandler = (data) => {
     //data is the set of data retrived from the form it won t be sent unless the form is valid (0 error messages)
-console.log(data);
+    //const local=JSON.parse(localStorage.getItem("coords"));
+ 
+    setSubmittedData([data,JSON.parse(localStorage.getItem("coords"))]);
+     
+    console.log("local",JSON.parse(localStorage.getItem("coords")));
+console.log("submitted",submittedData);
 };
     return(
         <div>
@@ -32,7 +46,26 @@ console.log(data);
             
             <select className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm px-5 text-[#656565]" name="categorie" {...register("category") } onChange={(e)=>setCat(e.target.value)} >
             <option value="" className="font-normal text-sm text-[#656565]">Catégorie</option>
-            <option value="Historique" className="font-normal text-sm text-[#656565]">Historique</option>
+            <option value="Monument" className="font-normal text-sm text-[#656565]">Monument</option>
+            <option value="Musée" className="font-normal text-sm text-[#656565]">Musée</option>
+            <option value="place publique" className="font-normal text-sm text-[#656565]">place publique</option>
+            <option value="Site naturel" className="font-normal text-sm text-[#656565]">Site naturel</option>
+            <option value="Parc d'attraction" className="font-normal text-sm text-[#656565]">Parc d'attraction</option>
+            <option value="Lieu de culte" className="font-normal text-sm text-[#656565]">Lieu de culte</option>
+            <option value="Site archéologique" className="font-normal text-sm text-[#656565]">Site archéologique</option>
+
+
+            </select>
+            <select className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm px-5 text-[#656565]" name="type" {...register("type") } onChange={(e)=>setType(e.target.value)} >
+            <option value="" className="font-normal text-sm text-[#656565]">Type</option>
+            <option value="Histoire" className="font-normal text-sm text-[#656565]">Histoire</option>
+            <option value="Culture " className="font-normal text-sm text-[#656565]">Culture </option>
+            <option value="Nature " className="font-normal text-sm text-[#656565]">Nature </option>
+            <option value="Religion " className="font-normal text-sm text-[#656565]">Religion </option>
+            <option value="Divertissement " className="font-normal text-sm text-[#656565]">Divertissement </option>
+            <option value="Aventure " className="font-normal text-sm text-[#656565]">Aventure </option>
+            <option value="Éducation " className="font-normal text-sm text-[#656565]">Éducation </option>
+            <option value="Gastronomie  " className="font-normal text-sm text-[#656565]">Gastronomie  </option>
 
 
             </select>

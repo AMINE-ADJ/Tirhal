@@ -35,10 +35,7 @@ export default function HomePage() {
       <Navbar user={User} sendCords={handleTextChangend} />
       <div className="flex flex-row">
         <SideBar isOpen={isOpen} WhatToToggle={WhatToToggle} />
-        <div
-          onClick={showSidebar}
-          className=" flex flex-row gap-20 items-center justify-center w-screen rounded-3xl mx-3 my-2"
-        >
+        <div className=" flex flex-row gap-20 items-center justify-center w-screen rounded-3xl mx-3 my-2">
           {/* <button onClick={()=>handleClickMap("Region")} className='bg-slate-400 rounded p-10'>Region</button>
         <button onClick={()=>handleClickMap("Lieu")} className='bg-slate-400 rounded p-10'>Lieu</button>
         <button onClick={()=>handleClickMap("AddResp")} className='bg-slate-400 rounded p-10'> Add resp Lieu</button> */}
