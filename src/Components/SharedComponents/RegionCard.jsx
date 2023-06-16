@@ -96,9 +96,10 @@ export default function RegionCard() {
                   !isDisabled ? "border-black border-[1px]" : ""
                 }`}
                 type="name"
-                name="name"
+                
                 defaultValue={data.name}
                 disabled={isDisabled}
+                name="name"
                 onChange={handleChange}
               />
             </div>
@@ -149,7 +150,7 @@ export default function RegionCard() {
           <button
             type="submit"
             onClick={handleSubmit}
-            className="bg-terhal-blue2 mx-32 mt-3 px-1 rounded-xl font-poppins font-semibold hover:bg-blue-300 text-white py-3"
+            className="bg-terhal-green mx-32 mt-3 px-1 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white py-3"
           >
             Confirm
           </button>
@@ -158,7 +159,7 @@ export default function RegionCard() {
       {isDisabled && (
         <button
           onClick={OnClickModifie}
-          className="bg-terhal-blue2 mx-24 rounded-xl font-poppins font-semibold hover:bg-blue-300 text-white py-3"
+          className="bg-terhal-green mx-24 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white py-3"
         >
           Modifie
         </button>

@@ -15,6 +15,7 @@ import GeocoderLeaflet from "./Geocoder";
 import { wilayas } from "./wilayas.js";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
+
   //const [map,setMap]=useState(null);
   const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
   const [isZoomed, setisZoomed] = useState(false);
@@ -169,7 +170,11 @@ export default function Map(props) {
                     });
                   } else {
                     setisZoomed(false);
-                    HandleRegionClick("AddRespRegion");
+                    if (props.isMaster) {
+                      HandleRegionClick("AddRespRegion");
+                    } else {
+                      HandleRegionClick("PrivateRegion");
+                    }
                   }
                   // HandleRegionClick();
                 },

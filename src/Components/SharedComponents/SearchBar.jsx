@@ -17,7 +17,7 @@ export default function SearchBar(props) {
     <div className="flex flex-row items-center gap-4 ">
       <img
         src={logo}
-        className="md:my-0 my-2 md:ml-4 w-12 lg:h-10 md:h-5 md:w-5 lg:w-10 h-12 cursor-pointer rounded-full"
+        className="md:my-0 my-2 md:ml-4 w-12 lg:h-10 md:h-5 md:w-5 lg:w-10 h-12 cursor-pointer"
       />
       <div className="flex flex-row gap-0">
         <input
@@ -27,7 +27,7 @@ export default function SearchBar(props) {
         ></input>
         <div
           onClick={handleSubmit}
-          className="w-14 h-15 justify-center bg-terhal-blue rounded-r-lg flex flex-row items-center "
+          className="w-14 h-15 justify-center bg-terhal-orange rounded-r-lg flex flex-row items-center "
         >
           <img src={searchIcon} />
         </div>

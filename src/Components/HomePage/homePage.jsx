@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../SharedComponents/Navbar";
 import SideBar from "../SharedComponents/SideBar";
 import Map from "../SharedComponents/Map";
 export default function HomePage() {
   const [isOpen, setSideBar] = useState(false);
+  const [isMaster, setisMaster] = useState();
+  const [User, setUser] = useState();
+
   const [WhatToToggle, setisWhatToToggle] = useState("");
+  useEffect(() => {
+    let user = JSON.parse(localStorage.getItem("user"));
+    setUser(user);
+    if (user.role == "master") {
+      setisMaster(true);
+    } else {
+      setisMaster(false);
+    }
+    console.log(user);
+  }, []);
+
   const showSidebar = () => setSideBar(!isOpen);
   const handleClickMap = (what) => {
     showSidebar();
@@ -15,9 +29,10 @@ export default function HomePage() {
     setPlace(text);
     // handleClickMap("Region");
   };
+
   return (
     <div className="h-screen w-screen bg-white ">
-      <Navbar sendCords={handleTextChangend} />
+      <Navbar user={User} sendCords={handleTextChangend} />
       <div className="flex flex-row">
         <SideBar isOpen={isOpen} WhatToToggle={WhatToToggle} />
         <div
@@ -27,7 +42,11 @@ export default function HomePage() {
           {/* <button onClick={()=>handleClickMap("Region")} className='bg-slate-400 rounded p-10'>Region</button>
         <button onClick={()=>handleClickMap("Lieu")} className='bg-slate-400 rounded p-10'>Lieu</button>
         <button onClick={()=>handleClickMap("AddResp")} className='bg-slate-400 rounded p-10'> Add resp Lieu</button> */}
-          <Map handleClickMap={handleClickMap} pos={place} />
+          <Map
+            handleClickMap={handleClickMap}
+            pos={place}
+            isMaster={isMaster}
+          />
         </div>
       </div>
     </div>
