@@ -13,11 +13,12 @@ import "leaflet/dist/leaflet.css";
 import L, { Icon, map } from "leaflet";
 import GeocoderLeaflet from "./Geocoder";
 import { wilayas } from "./wilayas.js";
+import axios from "axios";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
 
   //const [map,setMap]=useState(null);
-  const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
+  const [ischoosed, setichoosed] = useState(new Array(60).fill(false));
   const [isZoomed, setisZoomed] = useState(false);
   const [showMarker, setShowMarker] = useState(false);
   const mapRef = useRef(null);
@@ -38,8 +39,8 @@ export default function Map(props) {
       </Marker>
     );
   }
-  const HandleRegionClick = (e) => {
-    props.handleClickMap(e);
+  const HandleRegionClick = (e, c) => {
+    props.handleClickMap(e, c);
   };
   const [isClicked, setIsClicked] = useState(false);
   const HandleBtnClick = () => {
@@ -51,16 +52,31 @@ export default function Map(props) {
     iconSize: [38, 38], // size of the icon
   });
 
-  const updateRegionCase = (index, value) => {
-    const updatedTab = [...ischoosed];
-    updatedTab[index] = value;
-    setichoosed(updatedTab);
-  };
-
   useEffect(() => {
     //check if each region rahi majoutiya wella nn, ...
     //recuper code wilaya existant. //get all region.
-    updateRegionCase(0, true); //updating adrar
+    axios
+      .get("http://127.0.0.1:8700/api/regions/", {
+        "Content-Type": "application/json",
+      })
+      .then(function (res) {
+        // console.log(res.data.data.role);
+        // console.log(res.data.data);
+        const Existedregions = res.data.data;
+        const updatedTab = [...ischoosed];
+        for (let index = 0; index < Existedregions.length; index++) {
+          const region = Existedregions[index];
+          console.log(region.code - 1, "it's state", true);
+          updatedTab[region.code - 1] = true;
+          // updateRegionCase(region.code - 1, true);
+        }
+        setichoosed(updatedTab);
+        console.log(ischoosed);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // updateRegionCase(0, true); //updating adrar
     // updateRegionCase(code_wilaya - 1 , true); //updating adrar
     const fetchData = async () => {
       try {
@@ -159,7 +175,8 @@ export default function Map(props) {
                   map.setView([lat, lng], 8);
                   if (ischoosed[key.properties.city_code - 1]) {
                     if (!isClicked) {
-                      HandleRegionClick("Region");
+                      console.log(key.properties.city_code);
+                      HandleRegionClick("Region", key.properties.city_code);
                     }
                     setColor("");
                     setSelectedPos([lat, lng]);

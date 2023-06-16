@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RegionPic from "../../assets/regionPic.png";
 import StarPic from "../../assets/star.png";
 import lieuPic from "../../assets/lieuTour.png";
@@ -6,24 +6,42 @@ import visitPic from "../../assets/visits.png";
 import UserPic from "../../assets/User.png";
 import EmailPic from "../../assets/email.png";
 import PhonePic from "../../assets/phone.png";
-export default function RegionCard() {
+import axios from "axios";
+export default function RegionCard(props) {
   const [isDisabled, setisDisabled] = useState(true);
-  const fetechedData = {
-    name: "Hicham tihami",
-    email: "tihami@esi.dz",
-    phone: "0994933933",
-  };
+  // const [WilayaCode, setisWilayaCode] = useState(props.code);
+  // const WilayaCard = {
+  //   WilayaCardname: "Hicham tihami",
+  //   email: "tihami@esi.dz",
+  //   phone: "0994933933",
+  // };
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:8700/api/region/${props.code}`, {
+        "Content-Type": "application/json",
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.data[0]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   //init this data with the default one that comes from back.
-  const [data, setData] = useState({
-    name: fetechedData.name,
-    email: fetechedData.email,
-    phone: fetechedData.phone,
+  const [WilayaData, setWilayaData] = useState({
+    WilayaName: "Alger",
+    WilayaCode: 16,
+    WilayaNbPlaces: 11,
+    WilayaResponsable: { name: "Amine", email: "AD", phone: "03993939" },
   });
   const handleChange = (e) => {
-    const name = e.target.name;
+    const name1 = e.target.name;
+    const name = WilayaData.WilayaResponsable.name1;
     const value = e.target.value;
 
-    setData({ ...data, [name]: value });
+    setWilayaData({ ...WilayaData, [name]: value });
     // console.log(data);
   };
   const handleSubmit = (e) => {
@@ -31,7 +49,7 @@ export default function RegionCard() {
     setisDisabled(true);
     //send updated infos
     console.log("send post request cuz info is modified and confirmed");
-    console.log("this is data i send : ", data);
+    console.log("this is data i send : ", WilayaData);
 
     console.log(isDisabled);
   };
@@ -53,15 +71,17 @@ export default function RegionCard() {
       <div className="flex flex-row items-center justify-between px-5 ">
         <div className="flex flex-col">
           <h1 className="font-semibold font-poppins text-terhal-black text-lg">
-            Laghouat
+            {WilayaData.WilayaName}
           </h1>
           <p className="font-poppins text-terhal-black  font-extralight ">
-            Wilaya
+            Wilaya {WilayaData.WilayaCode}
           </p>
         </div>
         <div className="flex flex-row gap-2 items-end">
           <img src={StarPic} />
-          <p className="font-poppins font-normal">4.8</p>
+          <p className="font-poppins font-normal">
+            4.{Math.floor(Math.random() * 10)}
+          </p>
         </div>
       </div>
 
@@ -69,13 +89,15 @@ export default function RegionCard() {
         <div className="flex flex-row gap-2">
           {" "}
           <img className="h-4" src={visitPic} />{" "}
-          <p className=" text-xs font-poppins font-normal">1200 visiteurs</p>
+          <p className=" text-xs font-poppins font-normal">
+            {Math.floor(Math.random() * 1200) + 1} visiteurs
+          </p>
         </div>
         <div className="flex flex-row gap-2">
           {" "}
           <img className="h-4" src={lieuPic} />{" "}
           <p className="text-xs font-poppins font-normal">
-            24 lieux touristiques
+            {WilayaData.WilayaNbPlaces} lieux touristiques
           </p>
         </div>
       </div>
@@ -84,7 +106,7 @@ export default function RegionCard() {
       <form method="post" onSubmit={handleSubmit}>
         <div className="flex flex-col items-start px-5 gap-2">
           <h1 className="font-semibold font-poppins text-terhal-black text-lg">
-            Responsable de Laghouat
+            Responsable de {WilayaData.WilayaName}
           </h1>
 
           <div className="flex flex-col">
@@ -96,8 +118,7 @@ export default function RegionCard() {
                   !isDisabled ? "border-black border-[1px]" : ""
                 }`}
                 type="name"
-                
-                defaultValue={data.name}
+                defaultValue={WilayaData.WilayaResponsable.name}
                 disabled={isDisabled}
                 name="name"
                 onChange={handleChange}
@@ -118,7 +139,7 @@ export default function RegionCard() {
                 }`}
                 type="email"
                 name="email"
-                defaultValue={data.email}
+                defaultValue={WilayaData.WilayaResponsable.email}
                 disabled={isDisabled}
                 onChange={handleChange}
               />
@@ -136,7 +157,7 @@ export default function RegionCard() {
                 }`}
                 type="text"
                 name="phone"
-                defaultValue={data.phone}
+                defaultValue={WilayaData.WilayaResponsable.phone}
                 disabled={isDisabled}
                 onChange={handleChange}
               />
