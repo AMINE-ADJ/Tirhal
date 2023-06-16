@@ -15,11 +15,18 @@ import GeocoderLeaflet from "./Geocoder";
 import { wilayas } from "./wilayas.js";
 export default function Map(props) {
   const [position, setPosition] = useState(null);
+
   //const [map,setMap]=useState(null);
   const [ischoosed, setichoosed] = useState(new Array(58).fill(false));
   const [isZoomed, setisZoomed] = useState(false);
   const [showMarker,setShowMarker]=useState(false);
   const mapRef = useRef(null);
+  const markers = [
+    { position: [26.426308999847024, -1.5776367858052256], title: 'Marker 1' },
+    { position: [27.070778724009017, -2.912674156243442], title: 'Marker 2' },
+    
+    // Add more marker objects as needed
+  ];
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
@@ -31,18 +38,21 @@ export default function Map(props) {
         map.flyTo(e.latlng, map.getZoom());
       },
     });
+    
     return position === null ? null : (
       <Marker position={position}>
         <Popup>Vous etes ici</Popup>
       </Marker>
     );
   }
+ 
   const HandleRegionClick = (e) => {
     props.handleClickMap(e);
   };
   const [isClicked,setIsClicked]=useState(false);
   const HandleBtnClick = () => {
     setIsClicked(true);
+    props.setFinished(false);
     props.handleClickMap("AddRespLieu");
   };
   const icon = new Icon({
@@ -95,6 +105,11 @@ export default function Map(props) {
   // const [choosed, setChoosed] = useState(true);
     const [color,setColor]=useState("#FFA500");
     const [selectedPos,setSelectedPos]=useState(null);
+
+
+
+
+
   return (
     <div className="relative">
       <MapContainer
@@ -108,6 +123,11 @@ export default function Map(props) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+{ isZoomed ? markers.map((marker) => (  //here is the code that displays given markers in the map when loaded
+        <Marker  position={marker.position}>
+          <Popup>{marker.title}</Popup>
+        </Marker>
+      )) : null }
         {wilayas.features.map((key, index) => {
 
           const coordinates = key.geometry.coordinates[0].map((item) => [
@@ -170,6 +190,11 @@ export default function Map(props) {
                     setisZoomed(false);
                     setShowMarker(false);
                     HandleRegionClick("AddRespRegion");
+                    if (props.isMaster) {
+                      HandleRegionClick("AddRespRegion");
+                    } else {
+                      HandleRegionClick("PrivateRegion");
+                    }
                   }
                   // HandleRegionClick();
                 },
