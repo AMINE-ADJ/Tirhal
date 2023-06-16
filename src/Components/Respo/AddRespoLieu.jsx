@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import camera from "../../assets/Camera.svg";
 import { useForm } from "react-hook-form"; 
 export default function AddrespoLieu(){
@@ -17,9 +17,22 @@ const prochaineEtape=()=>{
 const {register,handleSubmit}=useForm(
   
   );
+  const [submittedData,setSubmittedData]=useState(null);
+  const [location,setLocation]=useState([]);
+  useEffect(()=>{
+    setLocation(JSON.parse(localStorage.getItem("coords")));//maranich nst3mlha
+
+  },[]);
+ 
+
 const formSubmitHandler = (data) => {
     //data is the set of data retrived from the form it won t be sent unless the form is valid (0 error messages)
-console.log(data);
+    //const local=JSON.parse(localStorage.getItem("coords"));
+ 
+    setSubmittedData([data,JSON.parse(localStorage.getItem("coords"))]);
+     
+    console.log("local",JSON.parse(localStorage.getItem("coords")));
+console.log("submitted",submittedData);
 };
     return(
         <div>

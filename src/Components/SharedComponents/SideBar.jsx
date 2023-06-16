@@ -4,8 +4,6 @@ import RegionCard from "./RegionCard";
 import AddrespoLieu from "../Respo/AddRespoLieu";
 import AddrespoRegion from "../Respo/AddRespoRegion";
 export default function SideBar(props) {
-  
-
   return (
     <div
       className={`bg-white h-[630px] left-0 pl-5 py-2 ${
@@ -16,6 +14,7 @@ export default function SideBar(props) {
     {props.isOpen?
      (<>
      {(() => {
+      
         switch(props.WhatToToggle) {
           case 'Region':
             return <RegionCard/>
