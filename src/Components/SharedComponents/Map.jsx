@@ -18,7 +18,7 @@ export default function Map(props) {
   const [position, setPosition] = useState(null);
 
   //const [map,setMap]=useState(null);
-  const [ischoosed, setichoosed] = useState(new Array(60).fill(false));
+  const [ischoosed, setichoosed] = useState(new Array(60).fill(0));
   const [isZoomed, setisZoomed] = useState(false);
   const [showMarker, setShowMarker] = useState(false);
   const mapRef = useRef(null);
@@ -69,6 +69,7 @@ export default function Map(props) {
 
   useEffect(() => {
     setIsOwner(LocalisOwner);
+
     //check if each region rahi majoutiya wella nn, ...
     //recuper code wilaya existant. //get all region.
     axios
@@ -82,10 +83,25 @@ export default function Map(props) {
         const updatedTab = [...ischoosed];
         for (let index = 0; index < Existedregions.length; index++) {
           const region = Existedregions[index];
-          console.log(region.code - 1, "it's state", true);
-          updatedTab[region.code - 1] = true;
+          console.log(region.code - 1, "it's state", 1);
+          if (JSON.parse(localStorage.getItem("user")).role != "master") {
+            if (
+              region.code === JSON.parse(localStorage.getItem("userWilaya"))
+            ) {
+              console.log(region.code - 1, "it's state", 2);
+              updatedTab[region.code - 1] = 2;
+            } else {
+              console.log(region.code - 1, "it's state", 1);
+              updatedTab[region.code - 1] = 1;
+            }
+          } else {
+            updatedTab[region.code - 1] = 2;
+          }
+
+          // updatedTab[region.code - 1] = 1;
           // updateRegionCase(region.code - 1, true);
         }
+
         setichoosed(updatedTab);
         console.log(ischoosed);
       })
@@ -141,7 +157,7 @@ export default function Map(props) {
   }, [props.pos, map, LocalisOwner]);
 
   // const [choosed, setChoosed] = useState(true);
-  const [color, setColor] = useState("#4CAF50");
+  const [color, setColor] = useState("#00FFFF");
   const [selectedPos, setSelectedPos] = useState(null);
   return (
     <div className="relative">
@@ -182,9 +198,12 @@ export default function Map(props) {
           return (
             <Polygon
               pathOptions={{
-                fillColor: ischoosed[key.properties.city_code - 1]
-                  ? color
-                  : "#FFFFF",
+                fillColor:
+                  ischoosed[key.properties.city_code - 1] === 1
+                    ? "#ff0000"
+                    : ischoosed[key.properties.city_code - 1] === 2
+                    ? "#00FFFF"
+                    : "#FFFFF",
                 //fillOpacity: 0.8,
                 weight: 1,
                 opacity: 1,

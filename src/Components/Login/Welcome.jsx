@@ -42,9 +42,16 @@ export default function Welcome() {
         "Content-Type": "application/json",
       })
       .then(function (res) {
-        // console.log(res.data.data.role);
+        console.log(res.data);
         console.log(res.data.data);
         localStorage.setItem("user", JSON.stringify(res.data.data));
+        if (res.data.data.role != "master") {
+          localStorage.setItem(
+            "userWilaya",
+            JSON.stringify(res.data.regions[0].code)
+          );
+        }
+
         // navigate("/auth");
         navigate("/auth");
       })
