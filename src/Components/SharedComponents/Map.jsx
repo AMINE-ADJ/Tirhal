@@ -25,6 +25,7 @@ export default function Map(props) {
   const markers = [
     { position: [26.426308999847024, -1.5776367858052256], title: 'Marker 1' },
     { position: [27.070778724009017, -2.912674156243442], title: 'Marker 2' },
+    {position : [31.61667, -2.21667] ,title : "marker3"}
     
     // Add more marker objects as needed
   ];
@@ -134,7 +135,7 @@ export default function Map(props) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 { isZoomed ? markers.map((marker) => (  //here is the code that displays given markers in the map when loaded
-        <Marker  position={marker.position}>
+        <Marker   position={marker.position}>
           <Popup>{marker.title}</Popup>
         </Marker>
       )) : null }
@@ -196,6 +197,8 @@ export default function Map(props) {
                     setisZoomed(true);
                     setShowMarker(true);
                   } else {
+                    setIsClicked(false);
+
                     setisZoomed(false);
                     if (props.isMaster) {
                       HandleRegionClick("AddRespRegion");

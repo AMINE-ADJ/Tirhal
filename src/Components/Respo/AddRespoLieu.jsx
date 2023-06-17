@@ -76,7 +76,7 @@ if(cpt>1){
 
             </select>
             <input className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]" placeholder="Adresse" name="addresse" {...register("addresse")} onChange={(e)=>setAd(e.target.value)}></input>
-            <input className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]" placeholder="Horaires du travail" name="horaires" {...register("horaires")} onChange={(e)=>setHor(e.target.value)}></input>
+            <input className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]" placeholder="Horaires du travail" name="horaires" {...register("horaires")} onChange={(e)=>setHor(e.target.value)} type="time"></input>
            <div className="md:w-[300px] md:h-[40px]">
             <div className="md:w-[150px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm gap-x-[10px]  text-[#656565] cursor-pointer flex justify-center items-center">
             <img src={camera}></img>
