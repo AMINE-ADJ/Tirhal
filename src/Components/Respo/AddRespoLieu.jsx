@@ -87,7 +87,7 @@ export default function AddrespoLieu(props) {
     <div>
       <form onSubmit={handleSubmit(formSubmitHandler)}>
         {etape == 1 ? (
-          <div className="md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center rounded-2xl shadow-2xl">
+          <div className="md:h-[550px] flex flex-col bg-[#FFFFF] border-2  gap-y-[50px] p-5  items-center rounded-2xl shadow-2xl">
             <div className=" flex flex-col items-center gap-y-[20px] ">
               <p className="text-xl font-medium font-poppins">
                 Ajouter un lieu

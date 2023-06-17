@@ -1,5 +1,5 @@
 import React from "react";
-import landing from "../../assets/landing.svg"
+import landing from "../../assets/logo.svg"
 import Welcome from "./Welcome";
 export default function Landing() {
   

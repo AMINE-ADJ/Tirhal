@@ -65,12 +65,12 @@ export default function Welcome() {
   return (
     <div
       id="form"
-      className="flex flex-col md:w-[500px] md:h-[550px] gap-y-[30px]  bg-white items-center p-[25px]"
+      className="flex flex-col md:w-[500px] md:h-[500px] gap-y-[70px]  bg-white items-center p-[25px]"
     >
       <div className="flex flex-col gap-y-[8px] mr-[220px]">
         <p className="text-xl font-[500]  font-poppins">Bienvenue à </p>
-        <p className="text-2xl text-[#5E81F4] font-poppins font-bold">
-          DZ Travel{" "}
+        <p className="text-2xl text-[#D8681D] font-poppins font-bold">
+          Tirhal{" "}
         </p>
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-y-[30px]">
@@ -118,13 +118,13 @@ export default function Welcome() {
         ))}
         <div className="flex flex-row justify-between md:w-[400px]">
           <input type="checkbox" className="cursor-pointer"></input>
-          <p className="text-sm text-[#6358DC] font-normal">
+          <p className="text-sm text-[#D8681D] font-semibold cursor-pointer hover:underline">
             <a>Forgot password?</a>
           </p>
         </div>
         <Link to="/auth">
           <button
-            className="md:w-[400px] md:h-[45px] text-white font-medium bg-[#6358DC] rounded-[5px] hover:bg-white hover:text-[#6358DC] hover:border-2 hover:border-[#6358DC]"
+            className="md:w-[400px] md:h-[45px] text-white font-medium bg-[#D8681D] rounded-[5px] hover:bg-white hover:text-[#D8681D] hover:border-2 hover:border-[#D8681D]"
             type="submit"
             onClick={handleSubmit}
           >
@@ -132,19 +132,8 @@ export default function Welcome() {
           </button>
         </Link>
       </form>
-      <div className="flex flex-row items-baseline justify-center gap-x-[10px]">
-        <div className="md:w-[150px] md:h-[3px] bg-[#F4F4F4]"></div>
-        <p className="md:text-lg font-normal">Ou</p>
-        <div className="md:w-[150px] md:h-[3px] bg-[#F4F4F4]"></div>
-      </div>
-      <a href="google.com">
-        <div className="flex flex-row justify-center items-center gap-x-[10px] md:w-[400px] md:h-[45px]  rounded-[5px] border-[2px] border-black cursor-pointer">
-          <img className="md:w-[30px] md:h-[30px]" src={google}></img>
-          <p className="md:text-black font-medium font-normal md:text-[17px]">
-            Continuer avec Google
-          </p>
-        </div>
-      </a>
+     
+    
     </div>
   );
 }

@@ -17,7 +17,7 @@ export default function Navbar(props) {
       <div className="flex flex-row gap-10 items-center">
         <div className="flex flex-row gap-2 items-center">
           <ion-icon name="call"></ion-icon>
-          <p>{phone}</p>
+          <p>{props.user!=null ? props.user.phone : phone}</p>
         </div>
 
         <UserCircle user={props.user} />
