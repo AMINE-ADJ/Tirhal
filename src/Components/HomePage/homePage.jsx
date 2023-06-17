@@ -52,6 +52,7 @@ export default function HomePage() {
           WhatToToggle={WhatToToggle}
           code={WilayaCode}
           idPlace={idPlace}
+          isMaster={isMaster}
         />
         <div className=" flex flex-row gap-20 items-center justify-center w-screen rounded-3xl mx-3 my-2">
           {/* <button onClick={()=>handleClickMap("Region")} className='bg-slate-400 rounded p-10'>Region</button>

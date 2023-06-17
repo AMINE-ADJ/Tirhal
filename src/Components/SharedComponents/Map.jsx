@@ -85,8 +85,11 @@ export default function Map(props) {
           const region = Existedregions[index];
           console.log(region.code - 1, "it's state", 1);
           if (JSON.parse(localStorage.getItem("user")).role != "master") {
+            console.log(JSON.parse(localStorage.getItem("userWilaya")));
             if (
-              region.code === JSON.parse(localStorage.getItem("userWilaya"))
+              JSON.parse(localStorage.getItem("userWilaya")).includes(
+                region.code
+              )
             ) {
               console.log(region.code - 1, "it's state", 2);
               updatedTab[region.code - 1] = 2;

@@ -19,7 +19,7 @@ export default function SideBar(props) {
             {(() => {
               switch (props.WhatToToggle) {
                 case "Region":
-                  return <RegionCard code={props.code}  />;
+                  return <RegionCard setSideBar={props.setSideBar} code={props.code} isMaster={props.isMaster}  />;
                 case "Lieu":
                   return <LieuCard idPlace={props.idPlace} />;
                 case "AddRespLieu":

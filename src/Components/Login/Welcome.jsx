@@ -48,7 +48,7 @@ export default function Welcome() {
         if (res.data.data.role != "master") {
           localStorage.setItem(
             "userWilaya",
-            JSON.stringify(res.data.regions[0].code)
+            JSON.stringify(res.data.regions.map((obj) => obj.code))
           );
         }
 

@@ -8,8 +8,10 @@ import EmailPic from "../../assets/email.png";
 import PhonePic from "../../assets/phone.png";
 import axios from "axios";
 import PrivateRegion from "./PrivateRegion";
+import AddrespoRegion from "../Respo/AddRespoRegion";
 export default function RegionCard(props) {
   const [isDisabled, setisDisabled] = useState(true);
+  const [isDeleted, setisDeleted] = useState(false);
   const [isOwner, setisOwner] = useState(false);
   const [respWilaya, setRespWilaya] = useState({});
   const [wilayaCard, setWilayaCard] = useState({});
@@ -20,34 +22,36 @@ export default function RegionCard(props) {
   //   phone: "0994933933",
   // };
   useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8700/api/region/${props.code}`, {
-        "Content-Type": "application/json",
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.data[0]); //this is a region
-        setWilayaCard(res.data.data[0]);
-        setRespWilaya(res.data.data[0].idUser);
-        let RespoCetteRegion = res.data.data[0].idUser;
+    if (!isDeleted) {
+      axios
+        .get(`http://127.0.0.1:8700/api/region/${props.code}`, {
+          "Content-Type": "application/json",
+        })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.data[0]); //this is a region
+          setWilayaCard(res.data.data[0]);
+          setRespWilaya(res.data.data[0].idUser);
+          let RespoCetteRegion = res.data.data[0].idUser;
 
-        console.log(RespoCetteRegion); //id de la region.
-        //compare ll id li kayen fl localhost ll id hada, ida le meme m3naha la region ta3o et t9der taffichihalo.
-        let user = JSON.parse(localStorage.getItem("user"));
+          console.log(RespoCetteRegion); //id de la region.
+          //compare ll id li kayen fl localhost ll id hada, ida le meme m3naha la region ta3o et t9der taffichihalo.
+          let user = JSON.parse(localStorage.getItem("user"));
 
-        if (RespoCetteRegion.id == user.id || user.role === "master") {
-          console.log("this region is owned by", RespoCetteRegion.id);
-          setisOwner(true);
-          localStorage.setItem("isOwner", true);
-        } else {
-          console.log("it's not ur region, get out !!");
-          setisOwner(false);
-          localStorage.setItem("isOwner", false);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+          if (RespoCetteRegion.id == user.id || user.role === "master") {
+            console.log("this region is owned by", RespoCetteRegion.id);
+            setisOwner(true);
+            localStorage.setItem("isOwner", true);
+          } else {
+            console.log("it's not ur region, get out !!");
+            setisOwner(false);
+            localStorage.setItem("isOwner", false);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }, [isOwner]);
 
   //init this data with the default one that comes from back.
@@ -83,7 +87,7 @@ export default function RegionCard(props) {
 
     axios
       .put(
-        `http://127.0.0.1:8700/api/updateregion/${4}`,
+        `http://127.0.0.1:8700/api/updateregion/${respWilaya.id}`,
         {
           email: respWilaya.email,
           fullname: respWilaya.fullname,
@@ -105,15 +109,29 @@ export default function RegionCard(props) {
     setisDisabled(false);
     console.log(isDisabled);
   };
+  const OnClickSupprimmer = () => {
+    // setisDisabled(false);
+    props.setSideBar(false);
+    //eb3et requete
+    axios
+      .delete(`http://127.0.0.1:8700/api/deleteregion/${props.code}`, {
+        "Content-Type": "application/json",
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e) => console.log(e));
+    console.log("region deleted by master");
+  };
   //   const OnClickConfirm = () => {
   //     setisDisabled(true);
   //     //send updated infos
   //     console.log("send post request cuz info is modified and confirmed");
   //     console.log(isDisabled);
   //   };
-  return isOwner ? (
+  return isOwner && !isDeleted ? (
     <>
-      <div className="bg-white h-[600px] rounded-2xl shadow-2xl flex flex-col gap-3">
+      <div className="bg-white h-[620px] rounded-2xl shadow-2xl flex flex-col gap-3">
         <div className="rounded-2xl px-2 py-3">
           <img src={RegionPic} />
         </div>
@@ -214,29 +232,39 @@ export default function RegionCard(props) {
               </p>
             </div>
           </div>
-          {!isDisabled && (
+          {!isDisabled && props.isMaster && (
             <button
               type="submit"
               onClick={handleSubmit}
-              className="bg-terhal-green mx-32 mt-3 px-1 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white py-3"
+              className="bg-terhal-green mx-32 mt-3 px-1 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white text-xs py-2"
             >
               Confirm
             </button>
           )}
         </form>
-        {isDisabled && (
+        {isDisabled && props.isMaster && (
           <button
             onClick={OnClickModifie}
-            className="bg-terhal-green mx-24 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white py-3"
+            className="bg-terhal-green mx-24 rounded-xl font-poppins font-semibold hover:bg-green-900 text-white text-xs py-2"
           >
             Modifie
           </button>
         )}
+        {props.isMaster && (
+          <button
+            onClick={OnClickSupprimmer}
+            className="bg-red-600 mx-24 rounded-xl font-poppins font-semibold hover:bg-red-900 text-white text-xs py-2 "
+          >
+            Supprimmer Region
+          </button>
+        )}
       </div>
     </>
-  ) : (
+  ) : !isOwner && !isDeleted ? (
     <>
       <PrivateRegion />
     </>
+  ) : (
+    <AddrespoRegion setSideBar={props.setSideBar} />
   );
 }

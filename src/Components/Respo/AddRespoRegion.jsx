@@ -34,29 +34,30 @@ export default function AddrespoRegion(props) {
       phone: data.numero,
       role: "admin",
     };
-    let region = {
-      email: data.email,
-      wilaya: data.nomregion,
-      latitude: newWilaya.coords[0],
-      longitude: newWilaya.coords[1],
-      code: data.codewilaya,
-    };
-    //+ add lat, lon in that request malgre vide.
-    //data is the set of data retrived from the form it won t be sent unless the form is valid (0 error messages)
     axios
       .post("http://127.0.0.1:8700/api/register/", resp, {
         "Content-Type": "application/json",
       })
       .then((res) => {
         console.log("response added ", res);
-      })
-      .catch((e) => console.log(e));
-    axios
-      .post("http://127.0.0.1:8700/api/addregion/", region, {
-        "Content-Type": "application/json",
-      })
-      .then((res) => {
-        console.log("response added ", res);
+        let region = {
+          email: data.email,
+          wilaya: data.nomregion,
+          latitude: newWilaya.coords[0],
+          longitude: newWilaya.coords[1],
+          code: data.codewilaya,
+        };
+        //+ add lat, lon in that request malgre vide.
+        //data is the set of data retrived from the form it won t be sent unless the form is valid (0 error messages)
+
+        axios
+          .post("http://127.0.0.1:8700/api/addregion/", region, {
+            "Content-Type": "application/json",
+          })
+          .then((res) => {
+            console.log("response added ", res);
+          })
+          .catch((e) => console.log(e));
       })
       .catch((e) => console.log(e));
   };
