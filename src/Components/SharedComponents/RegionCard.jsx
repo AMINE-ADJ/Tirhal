@@ -59,7 +59,7 @@ export default function RegionCard(props) {
   let WilayaData = {
     WilayaName: wilayaCard.wilaya,
     WilayaCode: wilayaCard.code,
-    WilayaNbPlaces: 11,
+    WilayaNbPlaces: 1,
     WilayaResponsable: {
       fullname: respWilaya.fullname,
       email: respWilaya.email,
