@@ -152,7 +152,7 @@ export default function Map(props) {
       if (props.pos != "" && mapRef.current && result) {
         console.log(result);
         const map = mapRef.current;
-        map.setView(result, 7);
+        map.setView(result, 15);
       }
     });
     console.log("props.pos=", props.pos);
