@@ -1,24 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import camera from "../../assets/Camera.svg";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
-export default function AddrespoRegion() {
+export default function AddrespoRegion(props) {
   const [etape, setEtape] = useState(1);
-  const [noml, setNoml] = useState("");
-  const [cat, setCat] = useState("");
-  const [ad, setAd] = useState("");
-  const [hor, setHor] = useState("");
+  const [nomRegion, setNomRegion] = useState("");
+  const [codeWilaya, setCodeWilaya] = useState("");
+
   const prochaineEtape = () => {
-    if (noml != "" && cat != "" && hor != "" && ad != "") {
+    if (nomRegion != "" && codeWilaya != "") {
       setEtape((cur) => cur + 1);
     } else alert("Please fill all the fields");
   };
+
   const { register, handleSubmit } = useForm();
   const formSubmitHandler = (data) => {
+    props.setSideBar(false);
+    let newWilaya = {
+      nomRegion: data.nomregion,
+      codeWilaya: data.codewilaya,
+      coords: JSON.parse(localStorage.getItem("region")),
+      nomresponsable: data.nomresponsable,
+      email: data.email,
+      phone: data.numero,
+      motDePasse: data.mdp,
+    };
+    console.log(newWilaya);
+    let resp = {
+      email: data.email,
+      password: data.mdp,
+      fullname: data.nomresponsable,
+      phone: data.numero,
+      role: "admin",
+    };
+    let region = {
+      email: data.email,
+      wilaya: data.nomregion,
+      latitude: newWilaya.coords[0],
+      longitude: newWilaya.coords[1],
+      code: data.codewilaya,
+    };
     //+ add lat, lon in that request malgre vide.
     //data is the set of data retrived from the form it won t be sent unless the form is valid (0 error messages)
-    console.log(data);
+    axios
+      .post("http://127.0.0.1:8700/api/register/", resp, {
+        "Content-Type": "application/json",
+      })
+      .then((res) => {
+        console.log("response added ", res);
+      })
+      .catch((e) => console.log(e));
+    axios
+      .post("http://127.0.0.1:8700/api/addregion/", region, {
+        "Content-Type": "application/json",
+      })
+      .then((res) => {
+        console.log("response added ", res);
+      })
+      .catch((e) => console.log(e));
   };
+
+  // useEffect(() => {
+  //   let regionCoords = JSON.parse(localStorage.getItem("region"));
+  //   setregionCoords(regionCoords);
+  //   console.log(regionCoords);
+  // }, []);
+
   return (
     <div>
       <form onSubmit={handleSubmit(formSubmitHandler)}>
@@ -30,60 +78,19 @@ export default function AddrespoRegion() {
               </p>
               <input
                 className=" outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]"
-                placeholder="Nom lieu"
-                name="nomlieu"
-                {...register("nomlieu")}
-                onChange={(e) => setNoml(e.target.value)}
+                placeholder="Nom Region"
+                name="nomregion"
+                {...register("nomregion")}
+                onChange={(e) => setNomRegion(e.target.value)}
               ></input>
 
-              <select
-                className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm px-5 text-[#656565]"
-                name="categorie"
-                {...register("category")}
-                onChange={(e) => setCat(e.target.value)}
-              >
-                <option value="" className="font-normal text-sm text-[#656565]">
-                  Catégorie
-                </option>
-                <option
-                  value="Historique"
-                  className="font-normal text-sm text-[#656565]"
-                >
-                  Historique
-                </option>
-              </select>
               <input
                 className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]"
-                placeholder="Adresse"
-                name="addresse"
-                {...register("addresse")}
-                onChange={(e) => setAd(e.target.value)}
+                placeholder="Code Wilaya"
+                name="codewilaya"
+                {...register("codewilaya")}
+                onChange={(e) => setCodeWilaya(e.target.value)}
               ></input>
-              <input
-                className="outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]"
-                placeholder="Horaires du travail"
-                name="horaires"
-                {...register("horaires")}
-                onChange={(e) => setHor(e.target.value)}
-              ></input>
-              <div className="md:w-[300px] md:h-[40px]">
-                <div className="md:w-[150px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm gap-x-[10px]  text-[#656565] cursor-pointer flex justify-center items-center">
-                  <img src={camera}></img>
-                  <label htmlFor="input" className="cursor-pointer">
-                    <p className="font-normal text-sm  text-[#656565]">
-                      Ajouter photo
-                    </p>
-                  </label>
-                  <input
-                    id="input"
-                    className="hidden"
-                    type="file"
-                    accept="image/png, image/jpg, image/gif, image/jpeg"
-                    name="photo"
-                    {...register("photo")}
-                  ></input>{" "}
-                </div>
-              </div>
             </div>
             <div className="flex flex-col items-center gap-y-[15px]">
               <div className="flex flex-row gap-x-[15px] justify-center items-center md:w-[150px]">
@@ -91,7 +98,7 @@ export default function AddrespoRegion() {
                 <div className="md:w-[35px] md:h-[3px] bg-[#AFAFAF] rounded-[5px]"></div>
               </div>
               <button
-                className="md:w-[120px] md:h-[35px] bg-[#3E87F6] text-white text-sm font-semibold rounded-[20px]"
+                className="md:w-[120px] md:h-[35px] bg-terhal-green text-white text-sm font-semibold rounded-[20px]"
                 onClick={prochaineEtape}
                 type="button"
               >
@@ -104,7 +111,7 @@ export default function AddrespoRegion() {
           <div className="rounded-2xl shadow-2xl md:h-[500px] flex flex-col bg-[#FFFFF] border-2  gap-y-[80px] p-5  items-center">
             <div className=" flex flex-col items-center gap-y-[30px] ">
               <p className="text-xl font-medium font-poppins ">
-                Ajouter un responsable{" "}
+                Ajouter un responsable region{" "}
               </p>
               <input
                 className=" outline-none md:w-[300px] md:h-[40px] rounded-[20px] bg-[#E7E7E7] font-normal text-sm p-5 text-[#656565]"
@@ -144,8 +151,9 @@ export default function AddrespoRegion() {
                 <div className="md:w-[35px] md:h-[3px] bg-[#00B2FF] rounded-[5px]"></div>
               </div>
               <button
-                className="md:w-[120px] md:h-[35px] bg-[#3E87F6] text-white text-sm font-semibold rounded-[20px]"
+                className="md:w-[120px] md:h-[35px] bg-terhal-green text-white text-sm font-semibold rounded-[20px]"
                 type="submit"
+                // onClick={}
               >
                 Terminer
               </button>
