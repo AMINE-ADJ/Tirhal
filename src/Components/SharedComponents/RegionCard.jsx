@@ -108,9 +108,7 @@ export default function RegionCard(props) {
           </div>
           <div className="flex flex-row gap-2 items-end">
             <img src={StarPic} />
-            <p className="font-poppins font-normal">
-              4.{Math.floor(Math.random() * 10)}
-            </p>
+            <p className="font-poppins font-normal">4.2</p>
           </div>
         </div>
 

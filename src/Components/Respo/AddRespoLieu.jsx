@@ -45,6 +45,23 @@ export default function AddrespoLieu(props) {
       phone: submittedData[0].numero,
       role: "responsable",
     };
+    let submittedPlace = {
+      email: submittedData[0].email,
+      idRegion: 4,
+      // IdUtilizer: 1,
+      name: submittedData[0].nomlieu,
+      latitude: submittedData[1].lat,
+      longitude: submittedData[1].lng,
+      category: submittedData[0].category,
+      theme: submittedData[0].type,
+      timefrom: submittedData[0].ouverture + ":00",
+      timeto: submittedData[0].fermeture + ":00",
+      description: `this is ${submittedData[0].nomlieu} `,
+      1: "",
+      2: "",
+    };
+    console.log("this is the place a i submit ", submittedPlace);
+
     axios
       .post("http://127.0.0.1:8700/api/register/", resp, {
         "Content-Type": "application/json",
@@ -54,25 +71,12 @@ export default function AddrespoLieu(props) {
       })
       .catch((e) => console.log(e));
 
-    let submittedPlace = {
-      email: submittedData[0].email,
-      idRegion: "1",
-      name: submittedData[0].nomlieu,
-      latitude: submittedData[1].lat,
-      longitude: submittedData[1].lng,
-      category: submittedData[0].category,
-      theme: submittedData[0].type,
-      timefrom: Date(submittedData[0].ouverture),
-      timeto: Date(submittedData[0].fermeture),
-      description: `this is ${submittedData[0].nomlieu} `,
-      1: "",
-    };
     axios
       .post("http://127.0.0.1:8700/api/addplace/", submittedPlace, {
         "Content-Type": "application/json",
       })
       .then((res) => {
-        console.log(res);
+        console.log(res); //pb fla requete 2eme.
         console.log(res.data.data);
       });
     if (cpt > 1) {

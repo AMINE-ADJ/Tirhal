@@ -104,7 +104,10 @@ export default function LieuCard(props) {
         <div className="flex flex-col px-5 gap-7 pt-4">
           <div className="flex flex-row items-center gap-3 ">
             <img className="w-6 h-6" src={location} />
-            <p>{LieuInfo.location}</p>
+            <p>
+              P{Math.floor(Math.random() * 10)}FXR -{" "}
+              {Math.floor(Math.random() * 10)}R
+            </p>
           </div>
           <div className="flex flex-row items-center gap-3 ">
             <img className="w-6 h-6" src={ouverture} />
