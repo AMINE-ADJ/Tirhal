@@ -52,7 +52,7 @@ export default function RegionCard(props) {
           console.log(e);
         });
     }
-  }, [isOwner]);
+  }, [isOwner, isDeleted]);
 
   //init this data with the default one that comes from back.
   // const [WilayaData, setWilayaData] = useState();
@@ -113,6 +113,7 @@ export default function RegionCard(props) {
     // setisDisabled(false);
     props.setSideBar(false);
     //eb3et requete
+    setisDeleted(true);
     axios
       .delete(`http://127.0.0.1:8700/api/deleteregion/${props.code}`, {
         "Content-Type": "application/json",
