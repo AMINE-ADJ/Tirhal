@@ -43,7 +43,7 @@ export default function Welcome() {
       })
       .then(function (res) {
         // console.log(res.data.data.role);
-        // console.log(res.data.data);
+        console.log(res.data.data);
         localStorage.setItem("user", JSON.stringify(res.data.data));
         // navigate("/auth");
         navigate("/auth");

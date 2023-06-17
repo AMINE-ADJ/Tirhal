@@ -22,12 +22,14 @@ export default function Map(props) {
   const [isZoomed, setisZoomed] = useState(false);
   const [showMarker, setShowMarker] = useState(false);
   const mapRef = useRef(null);
-  const markers = [
-    { position: [26.426308999847024, -1.5776367858052256], title: 'Marker 1' },
-    { position: [27.070778724009017, -2.912674156243442], title: 'Marker 2' },
-    
-    // Add more marker objects as needed
-  ];
+  // const markers = [
+  //   { position: [26.426308999847024, -1.5776367858052256], title: "Marker 1" },
+  //   { position: [27.070778724009017, -2.912674156243442], title: "Marker 2" },
+
+  //   // Add more marker objects as needed
+  // ];
+  const [Markers, setMarkers] = useState([]);
+
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
@@ -39,7 +41,7 @@ export default function Map(props) {
         map.flyTo(e.latlng, map.getZoom());
       },
     });
-    
+
     return position === null ? null : (
       <Marker position={position}>
         <Popup>Vous etes ici</Popup>
@@ -49,7 +51,11 @@ export default function Map(props) {
   const HandleRegionClick = (e, c) => {
     props.handleClickMap(e, c);
   };
+  const HandleLieuClick = (e, coords) => {
+    props.HandleLieuClick(e, coords);
+  };
   const [isClicked, setIsClicked] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const HandleBtnClick = () => {
     setIsClicked(true);
     props.setFinished(false);
@@ -59,8 +65,10 @@ export default function Map(props) {
     iconUrl: "../../assets/epingle.png",
     iconSize: [38, 38], // size of the icon
   });
+  var LocalisOwner = JSON.parse(localStorage.getItem("isOwner"));
 
   useEffect(() => {
+    setIsOwner(LocalisOwner);
     //check if each region rahi majoutiya wella nn, ...
     //recuper code wilaya existant. //get all region.
     axios
@@ -84,6 +92,21 @@ export default function Map(props) {
       .catch(function (error) {
         console.log(error);
       });
+
+    axios
+      .get("http://127.0.0.1:8700/api/allplaces/", {
+        "Content-Type": "application/json",
+      })
+      .then(function (res) {
+        console.log(res.data.data);
+        setMarkers(res.data.data);
+        // console.log(res.data.data.role);
+        // console.log(res.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     // updateRegionCase(0, true); //updating adrar
     // updateRegionCase(code_wilaya - 1 , true); //updating adrar
     const fetchData = async () => {
@@ -115,10 +138,10 @@ export default function Map(props) {
     });
     console.log("props.pos=", props.pos);
     console.log("map is rendred");
-  }, [props.pos, map]);
+  }, [props.pos, map, LocalisOwner]);
 
   // const [choosed, setChoosed] = useState(true);
-  const [color, setColor] = useState("#FFA500");
+  const [color, setColor] = useState("#4CAF50");
   const [selectedPos, setSelectedPos] = useState(null);
   return (
     <div className="relative">
@@ -133,11 +156,24 @@ export default function Map(props) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-{ isZoomed ? markers.map((marker) => (  //here is the code that displays given markers in the map when loaded
-        <Marker  position={marker.position}>
-          <Popup>{marker.title}</Popup>
-        </Marker>
-      )) : null }
+        {isZoomed
+          ? Markers.map(
+              (
+                marker //here is the code that displays given markers in the map when loaded
+              ) => (
+                <Marker
+                  position={[marker.latitude, marker.longitude]}
+                  eventHandlers={{
+                    click: () => {
+                      HandleLieuClick("Lieu", marker.id); //here u send marker.coordinates tjibha ml end-point
+                    },
+                  }}
+                >
+                  <Popup>{marker.name}</Popup>
+                </Marker>
+              )
+            )
+          : null}
         {wilayas.features.map((key, index) => {
           const coordinates = key.geometry.coordinates[0].map((item) => [
             item[1],
@@ -184,11 +220,13 @@ export default function Map(props) {
                   const { target } = event;
                   const { lat, lng } = target.getCenter();
                   const map = mapRef.current;
-
+                  localStorage.setItem("region", JSON.stringify([lat, lng]));
                   map.setView([lat, lng], 8);
+
                   if (ischoosed[key.properties.city_code - 1]) {
                     if (!isClicked) {
                       console.log(key.properties.city_code);
+
                       HandleRegionClick("Region", key.properties.city_code);
                     }
                     setColor("");
@@ -196,6 +234,7 @@ export default function Map(props) {
                     setisZoomed(true);
                     setShowMarker(true);
                   } else {
+                    setIsClicked(false);
                     setisZoomed(false);
                     if (props.isMaster) {
                       HandleRegionClick("AddRespRegion");
@@ -212,13 +251,13 @@ export default function Map(props) {
         })}
         {showMarker && isClicked ? <LocationMarker></LocationMarker> : null}
       </MapContainer>
-      {isZoomed && (
+      {isZoomed && isOwner && (
         <>
           <button
             onClick={HandleBtnClick}
             className="absolute bottom-5 flex flex-row justify-center items-center shadow-black shadow-2xl right-2 z-50 py-2 px-5 bg-white rounded-lg font-poppins"
           >
-            <img src={PinPic} />+ Ajouter un nouveau Lieu Touristique{" "}
+            <img src={PinPic} /> + Ajouter un nouveau Lieu Touristique{" "}
           </button>
         </>
       )}
