@@ -30,6 +30,7 @@ export default function RegionCard(props) {
         setWilayaCard(res.data.data[0]);
         setRespWilaya(res.data.data[0].idUser);
         let RespoCetteRegion = res.data.data[0].idUser;
+
         console.log(RespoCetteRegion); //id de la region.
         //compare ll id li kayen fl localhost ll id hada, ida le meme m3naha la region ta3o et t9der taffichihalo.
         let user = JSON.parse(localStorage.getItem("user"));
@@ -56,28 +57,47 @@ export default function RegionCard(props) {
     WilayaCode: wilayaCard.code,
     WilayaNbPlaces: 11,
     WilayaResponsable: {
-      name: respWilaya.fullname,
+      fullname: respWilaya.fullname,
       email: respWilaya.email,
       phone: respWilaya.phone,
     },
   };
-  console.log("this is wilaya card", wilayaCard);
-  console.log("this is wilaya reso", respWilaya);
-  console.log("this is wilaya Data", WilayaData);
+  // const [WilayaResp, setWilayaResp] = useState({});
+  console.log("this is Wilaya resp inititialzed avant modif", respWilaya);
+  // console.log("this is wilaya card", wilayaCard);
+  // console.log("this is wilaya reso", respWilaya);
+  // console.log("this is wilaya Data", WilayaData);
   const handleChange = (e) => {
-    const name1 = e.target.name;
-    const name = WilayaData.WilayaResponsable.name1;
+    const name = e.target.name;
     const value = e.target.value;
 
-    setWilayaData({ ...WilayaData, [name]: value });
-    console.log(WilayaData);
+    setRespWilaya({ ...respWilaya, [name]: value });
+    console.log(respWilaya);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     setisDisabled(true);
     //send updated infos
     console.log("send post request cuz info is modified and confirmed");
-    console.log("this is data i send : ", WilayaData);
+    console.log("this is data i send Wilaya Resp apres submit : ", respWilaya);
+
+    axios
+      .put(
+        `http://127.0.0.1:8700/api/updateregion/${4}`,
+        {
+          email: respWilaya.email,
+          fullname: respWilaya.fullname,
+          phone: respWilaya.phone,
+        },
+        {
+          "Content-Type": "application/json",
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+      })
+      .catch((e) => console.log(e));
 
     console.log(isDisabled);
   };
@@ -144,10 +164,10 @@ export default function RegionCard(props) {
                   className={`text-base font-poppins text-black placeholder-black rounded-sm px-1 ${
                     !isDisabled ? "border-black border-[1px]" : ""
                   }`}
-                  type="name"
-                  defaultValue={WilayaData.WilayaResponsable.name}
+                  type="fullname"
+                  defaultValue={WilayaData.WilayaResponsable.fullname}
                   disabled={isDisabled}
-                  name="name"
+                  name="fullname"
                   onChange={handleChange}
                 />
               </div>
