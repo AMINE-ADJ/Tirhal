@@ -13,7 +13,7 @@ export default function Commentaire(props) {
             <img className='w-10 h-10' src={CommPic}/>
             <div className='flex flex-col '>
                 <p className='text-sm font-poppins'>{props.Name}</p>
-                <p className='text-sm font-poppins text-terhal-gray'>Il y a {props.duree} ans </p>
+                <p className='text-sm font-poppins text-terhal-gray'>Il y a {props.duree} heurs </p>
                 <p className='text-xs'> ⭐⭐⭐⭐⭐ </p>
             </div>
         </div>

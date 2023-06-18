@@ -47,7 +47,7 @@ export default function AddrespoLieu(props) {
     };
     let submittedPlace = {
       email: submittedData[0].email,
-      idRegion: 4,
+      idRegion: 14,
       // IdUtilizer: 1,
       name: submittedData[0].nomlieu,
       latitude: submittedData[1].lat,
@@ -60,7 +60,7 @@ export default function AddrespoLieu(props) {
       1: "",
       2: "",
     };
-    console.log("this is the place a i submit ", submittedPlace);
+    console.log("this is the place a i submit", submittedPlace);
 
     axios
       .post("http://127.0.0.1:8700/api/register/", resp, {
@@ -68,17 +68,18 @@ export default function AddrespoLieu(props) {
       })
       .then((res) => {
         console.log("responsable added ", res);
+        axios
+          .post("http://127.0.0.1:8700/api/addplace/", submittedPlace, {
+            "Content-Type": "application/json",
+          })
+          .then((res) => {
+            console.log(res); //pb fla requete 2eme.
+            console.log(res.data.data);
+          })
+          .catch((e) => console.log(e));
       })
       .catch((e) => console.log(e));
 
-    axios
-      .post("http://127.0.0.1:8700/api/addplace/", submittedPlace, {
-        "Content-Type": "application/json",
-      })
-      .then((res) => {
-        console.log(res); //pb fla requete 2eme.
-        console.log(res.data.data);
-      });
     if (cpt > 1) {
       props.setSideBar(false);
     }

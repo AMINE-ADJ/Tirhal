@@ -52,7 +52,7 @@ export default function LieuCard(props) {
       },
       {
         Name: "Said Sahbi",
-        duree: "10",
+        duree: "24",
         Text: "This is a beautiful space ",
       },
     ],
